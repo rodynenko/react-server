@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React server api</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p>#React-server endpoints</p>
+<p>Root - <a href="https://mateacademy-react-server.herokuapp.com/api/v1">https://mateacademy-react-server.herokuapp.com/api/v1</a><br>
+Content-type: <code>application/json</code></p>
+<h2 id="authorization">Authorization</h2>
+<h3 id="log-in">Log in</h3>
+<p>Endpoint: <code>/auth/signin</code><br>
+Method: POST<br>
+body:</p>
+<pre class=" language-js"><code class="prism  language-js"><span class="token punctuation">{</span>  
+	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>  
+	password<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// min 6 symbols  </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>response(200):</p>
+<pre class=" language-js"><code class="prism  language-js"><span class="token punctuation">{</span>
+	token<span class="token punctuation">:</span> ‘’<span class="token punctuation">,</span> <span class="token comment">// jwt, used in Authorization header</span>
+	ttl<span class="token punctuation">:</span> ‘’<span class="token punctuation">,</span>
+	account<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span>
+		name<span class="token punctuation">:</span> <span class="token string">''</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="sign-up">Sign up</h3>
+<p>Endpoint: <code>/auth/signup</code><br>
+Method: POST<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>  
+	name<span class="token punctuation">:</span> <span class="token string">'string'</span><span class="token punctuation">,</span> <span class="token comment">// min 2 symbols  </span>
+	password<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// min 6 symbols  </span>
+	password_confirm<span class="token punctuation">:</span> <span class="token string">''</span>  
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="restore-password-in-development">Restore password (in development)</h3>
+<p>Endpoint: <code>/auth/restore-password</code><br>
+Method: POST<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	email<span class="token punctuation">:</span> <span class="token string">''</span> <span class="token comment">// email, required</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="user">User</h2>
+<h3 id="get-details">Get details</h3>
+<p>Endpoint: <code>/user/details</code> (require authorization token)<br>
+Method: GET<br>
+responce(200):</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	email<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+	name<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="change-password">Change password</h3>
+<p>Endpoint: <code>/user/change-password</code> (require authorization token)<br>
+Method: POST<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	password<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required</span>
+	confirm_password<span class="token punctuation">:</span> <span class="token string">''</span> <span class="token comment">// string, required</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="change-details">Change details</h3>
+<h2 id="article">Article</h2>
+<h3 id="get-articles">Get articles</h3>
+<p>Endpoint: <code>/article/get</code><br>
+Method: GET<br>
+query:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+	page<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">// optional, default 1  </span>
+	per_page<span class="token punctuation">:</span> <span class="token number">10</span>  <span class="token comment">// optional, default 10  </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>response(200):</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	items<span class="token punctuation">:</span>  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// list with articles</span>
+	currentPage<span class="token punctuation">:</span>  <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">// page counter</span>
+	isLast<span class="token punctuation">:</span>  <span class="token boolean">false</span><span class="token punctuation">,</span>
+	total<span class="token punctuation">:</span>  <span class="token number">10</span> <span class="token comment">// total of articles</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="get-single-article-by-slug">Get single Article by slug</h3>
+<p>Endpoint: <code>/article/get/:slug</code><br>
+Method: GET</p>
+<p>response(200):</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	data<span class="token punctuation">:</span> Article Object
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="add-article">Add article</h3>
+<p>Endpoint: <code>/article/create</code> ﻿(require authorization token)<br>
+Method: POST<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+	title<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required  </span>
+	text<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required  </span>
+	image<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// uri, optional  </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="update-article">Update article</h3>
+<p>Endpoint: <code>/article/update/:slug</code> (require authorization token)<br>
+method: PUT<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+	title<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, optional  </span>
+	text<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// string, optional  </span>
+	image<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// uri, optional,  </span>
+	isPublished<span class="token punctuation">:</span> boolean<span class="token punctuation">,</span> <span class="token comment">// boolean, optional  </span>
+	publicatedAt<span class="token punctuation">:</span> date<span class="token punctuation">,</span> <span class="token comment">// date, optional  </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="remove-article-by-slug">Remove article by slug</h3>
+<p>Endpoint: <code>/article/remove/:slug</code> (require authorization token)<br>
+Method: DELETE</p>
+<h2 id="comment">Comment</h2>
+<h3 id="add-comment">Add comment</h3>
+<p>Endpoint: <code>/comment/create</code> (require authorization token)<br>
+Method: POST<br>
+body:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	article_id<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required</span>
+	comment<span class="token punctuation">:</span> <span class="token string">''</span> <span class="token comment">// string, required</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="remove-comment">Remove comment</h3>
+<p>Endpoint: <code>/comment/remove/:id</code> (require authorization token)<br>
+Method: DELETE</p>
+</div>
+</body>
+
+</html>

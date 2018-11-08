@@ -9,10 +9,6 @@ const httpStatus = require('http-status');
 const expressWinston = require('express-winston');
 const expressValidation = require('express-validation');
 const helmet = require('helmet');
-// const session = require('express-session');
-// const mongoStoreFactory = require('connect-mongo');
-const mongoose = require('mongoose');
-const Promise = require('bluebird');
 const path = require('path');
 const mongoExpress = require('mongo-express/lib/middleware');
 const mongoExpressConfig = require('./mongo-express-config');
@@ -40,8 +36,6 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 const corsMiddleware = cors({});
-
-mongoose.Promise = Promise;
 
 // add MongoExress DB admin
 app.use('/admin-mongo', mongoExpress(mongoExpressConfig));

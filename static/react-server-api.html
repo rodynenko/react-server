@@ -17,8 +17,8 @@ Content-type: <code>application/json</code></p>
 <p>Endpoint: <code>/auth/signin</code><br>
 Method: POST<br>
 body:</p>
-<pre class=" language-js"><code class="prism  language-js"><span class="token punctuation">{</span>  
-	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>  
+<pre class=" language-js"><code class="prism  language-js"><span class="token punctuation">{</span>
+	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>
 	password<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// min 6 symbols  </span>
 <span class="token punctuation">}</span>
 </code></pre>
@@ -36,11 +36,11 @@ body:</p>
 <p>Endpoint: <code>/auth/signup</code><br>
 Method: POST<br>
 body:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
-	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>  
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
+	email<span class="token punctuation">:</span> <span class="token string">'mail@mail.com'</span><span class="token punctuation">,</span>
 	name<span class="token punctuation">:</span> <span class="token string">'string'</span><span class="token punctuation">,</span> <span class="token comment">// min 2 symbols  </span>
 	password<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// min 6 symbols  </span>
-	password_confirm<span class="token punctuation">:</span> <span class="token string">''</span>  
+	password_confirm<span class="token punctuation">:</span> <span class="token string">''</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="restore-password-in-development">Restore password (in development)</h3>
@@ -73,10 +73,10 @@ body:</p>
 <h3 id="change-details">Change details</h3>
 <h2 id="article">Article</h2>
 <h3 id="get-articles">Get articles</h3>
-<p>Endpoint: <code>/article/get</code><br>
+<p>Endpoint: <code>/article</code><br>
 Method: GET<br>
 query:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
 	page<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">// optional, default 1  </span>
 	per_page<span class="token punctuation">:</span> <span class="token number">10</span>  <span class="token comment">// optional, default 10  </span>
 <span class="token punctuation">}</span>
@@ -90,7 +90,7 @@ query:</p>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="get-single-article-by-slug">Get single Article by slug</h3>
-<p>Endpoint: <code>/article/get/:slug</code><br>
+<p>Endpoint: <code>/article/:slug</code><br>
 Method: GET</p>
 <p>response(200):</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
@@ -98,20 +98,20 @@ Method: GET</p>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="add-article">Add article</h3>
-<p>Endpoint: <code>/article/create</code> ﻿(require authorization token)<br>
+<p>Endpoint: <code>/article</code> ﻿(require authorization token)<br>
 Method: POST<br>
 body:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
 	title<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required  </span>
 	text<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, required  </span>
 	image<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// uri, optional  </span>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="update-article">Update article</h3>
-<p>Endpoint: <code>/article/update/:slug</code> (require authorization token)<br>
+<p>Endpoint: <code>/article/:slug</code> (require authorization token)<br>
 method: PUT<br>
 body:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>  
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
 	title<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// string, optional  </span>
 	text<span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment">// string, optional  </span>
 	image<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token comment">// uri, optional,  </span>
@@ -120,11 +120,11 @@ body:</p>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="remove-article-by-slug">Remove article by slug</h3>
-<p>Endpoint: <code>/article/remove/:slug</code> (require authorization token)<br>
+<p>Endpoint: <code>/article/:slug</code> (require authorization token)<br>
 Method: DELETE</p>
 <h2 id="comment">Comment</h2>
 <h3 id="add-comment">Add comment</h3>
-<p>Endpoint: <code>/comment/create</code> (require authorization token)<br>
+<p>Endpoint: <code>/comment</code> (require authorization token)<br>
 Method: POST<br>
 body:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
@@ -133,7 +133,7 @@ body:</p>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="remove-comment">Remove comment</h3>
-<p>Endpoint: <code>/comment/remove/:id</code> (require authorization token)<br>
+<p>Endpoint: <code>/comment/:id</code> (require authorization token)<br>
 Method: DELETE</p>
 </div>
 </body>

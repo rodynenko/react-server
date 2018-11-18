@@ -1,4 +1,5 @@
 const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -39,6 +40,12 @@ const corsMiddleware = cors({});
 
 // add MongoExress DB admin
 app.use('/admin-mongo', mongoExpress(mongoExpressConfig));
+
+// add ApolloServer
+const { typeDefs, resolvers } = require('../server/schemas');
+
+const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app, path: '/graphql' });
 
 // enable detailed API logging in dev env
 if (config.env === 'development') {
@@ -96,5 +103,10 @@ app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
 		stack: config.env === 'development' ? err.stack : {}
 	})
 );
+
+const port = process.env.PORT || config.port;
+app.listen(port, () => {
+	console.info(`server started on port ${port} (${config.env}). GraphQL path=${server.graphqlPath}`); // eslint-disable-line no-console
+});
 
 module.exports = app;

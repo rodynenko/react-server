@@ -5,6 +5,7 @@ const User = require('../models/user.model');
 const typeDefs = gql`
 	type Query {
 		article(slug: String!): Article
+		articles(perPage: Int, page: Int): [Article]
 	}
 
 	type Article {
@@ -16,11 +17,11 @@ const typeDefs = gql`
 		isPublished: Boolean
 		publicatedAt: String
 		slug: String
-		author: UserD,
+		author: User
 		comments: [String]
 	}
 
-	type UserD {
+	type User {
 		id: ID!
 		name: String
 		email: String
@@ -29,7 +30,16 @@ const typeDefs = gql`
 
 const resolvers = {
 	Query: {
-		article: (_, { slug }) => Article.findOne({ slug })
+		article: (_, { slug }) => Article.findOne({ slug }),
+		articles: (_, { perPage = 10, page = 1 }) => {
+			const _perPage = Math.max(parseInt(perPage, 10), 5);
+			const _page = Math.max(parseInt(page, 10));
+
+			return Article.find()
+			.sort({ publicatedAt: -1 })
+			.skip((_page - 1) * _perPage)
+			.limit(_perPage);
+		}
 	},
 	Article: {
 		author: _ => User.findOne({ _id: _.author[0] })

@@ -42,9 +42,9 @@ const corsMiddleware = cors({});
 app.use('/admin-mongo', mongoExpress(mongoExpressConfig));
 
 // add ApolloServer
-const { typeDefs, resolvers } = require('../server/schemas');
+const { typeDefs, resolvers, context } = require('../server/schemas');
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context });
 server.applyMiddleware({ app, path: '/graphql' });
 
 // enable detailed API logging in dev env

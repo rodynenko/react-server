@@ -70,7 +70,6 @@ module.exports = {
 
 		try {
 			authToken = req.headers[HEADER_NAME].substr(7);
-			console.log(authToken);
 			currentUser = await decodeToken(authToken);
 		} catch (e) {
 			console.warn(e);

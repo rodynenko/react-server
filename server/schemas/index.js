@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 const Article = require('../models/article.model');
 const User = require('../models/user.model');
-const { decodeToken } = require('../helpers/decodeToken');
+const { getGraphQLContext, authenticated } = require('./context');
 
 const typeDefs = gql`
 	type Query {
@@ -20,7 +20,7 @@ const typeDefs = gql`
 		publicatedAt: String
 		slug: String
 		author: User
-		comments: [String]
+		comments: [Comment]
 	}
 
 	type User {
@@ -28,15 +28,13 @@ const typeDefs = gql`
 		name: String
 		email: String
 	}
-`;
 
-const authenticated = next => (root, args, context, info) => {
-	if (!context.user) {
-		throw new Error(`Unauthorized!`);
+	type Comment {
+		id: ID!
+		author: User
+		comment: String
 	}
-
-	return next(root, args, context, info);
-};
+`;
 
 const resolvers = {
 	Query: {
@@ -50,33 +48,19 @@ const resolvers = {
 			.skip((_page - 1) * _perPage)
 			.limit(_perPage);
 		},
-		userDetails: authenticated((_, args, context) => {
-			return User.findOne({ _id: context.user.userId });
-		}),
+		userDetails: authenticated((_, args, context) =>
+			User.findOne({ _id: context.user.userId })),
 	},
 	Article: {
 		author: _ => User.findOne({ _id: _.author[0] })
 	},
+	Comment: {
+		author: _ => User.findOne({ _id: _.author[0] })
+	},
 };
-
-const HEADER_NAME = 'authorization';
 
 module.exports = {
 	typeDefs,
 	resolvers,
-	context: async ({ req }) => {
-		let authToken = null;
-		let currentUser = null;
-
-		try {
-			authToken = req.headers[HEADER_NAME].substr(7);
-			currentUser = await decodeToken(authToken);
-		} catch (e) {
-			console.warn(e);
-		}
-
-		return {
-			user: currentUser
-		}
-	}
+	context: getGraphQLContext
 };

@@ -1,4 +1,5 @@
 const { decodeToken } = require('../helpers/decodeToken');
+const { AuthorizationError } = require('apollo-server');
 const HEADER_NAME = 'authorization';
 
 const getGraphQLContext = async ({ req }) => {
@@ -19,7 +20,7 @@ const getGraphQLContext = async ({ req }) => {
 
 const authenticated = next => (root, args, context, info) => {
 	if (!context.user) {
-		throw new Error('Unauthorized!');
+		throw new AuthorizationError('you must be logged in');
 	}
 
 	return next(root, args, context, info);

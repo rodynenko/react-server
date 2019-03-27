@@ -2,12 +2,23 @@ const { gql } = require('apollo-server');
 const Article = require('../models/article.model');
 const User = require('../models/user.model');
 const { getGraphQLContext, authenticated } = require('./context');
+const { graphQLSignin, graphQLSignup } = require('../controllers/auth.controller');
 
 const typeDefs = gql`
 	type Query {
 		article(slug: String!): Article
 		articles(perPage: Int, page: Int): [Article]
 		userDetails: User
+	}
+
+	type Mutation {
+		createArticle(title: String!, text: String!, image: String): Article
+		deleteArticle(slug: String!)
+		updateArticle(title: String!, text: String!, image: String, isPublished: Boolean, publicatedAt: String): Article
+		addComment(articleId: ID!, comment: String!)
+		removeComment(commentID: ID!)
+		login(email: String!, password: String!): AuthResponse
+		signup(email: String!, password: String!, name: String!): AuthResponse
 	}
 
 	type Article {
@@ -34,6 +45,12 @@ const typeDefs = gql`
 		author: User
 		comment: String
 	}
+
+	type AuthResponse {
+		token: String
+		ttl: Number
+		account: User
+	}
 `;
 
 const resolvers = {
@@ -57,6 +74,19 @@ const resolvers = {
 	Comment: {
 		author: _ => User.findOne({ _id: _.author[0] })
 	},
+	AuthResponse: {
+		author: _ => User.findOne({ _id: _.author[0] })
+	},
+
+	Mutation: {
+		createArticle: authenticated(),
+		deleteArticle: authenticated(),
+		updateArticle: authenticated(),
+		addComment: authenticated(),
+		removeComment: authenticated(),
+		login: (_, args) => graphQLSignin(args),
+		signup: (_, args) => graphQLSignup(args),
+	}
 };
 
 module.exports = {

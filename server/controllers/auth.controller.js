@@ -94,8 +94,68 @@ function restorePassword(req, res, next) {
 		.catch(e => next(e));
 }
 
+function graphQLSignin(params) {
+	return User.findOne({ email: params.email })
+		.then((user) => {
+			if (!user) return new ApiError('No account with this email', 500);
+
+			if (user.authenticate(params.password)) {
+				const token = jwt.sign({
+					email: user.email,
+					userId: user._id,
+				}, config.jwtSecret);
+
+				return {
+					token,
+					ttl: 86400,
+					account: {
+						email: user.email,
+						name: user.name,
+					}
+				};
+			}
+
+			return new ApiError('Not valid password', 500);
+		});
+}
+
+function graphQLSignup(params) {
+	return User.findOne({ email: params.email })
+		.then((user) => {
+			if (user) throw new ApiError('User with this email has already exist', 500);
+
+			const newUser = new User({
+				email: params.email,
+				name: params.name,
+				salt: User.makeSalt(),
+			});
+
+			newUser.password = newUser.encryptPassword(params.password);
+
+			return newUser.save()
+				.then((savedUser) => {
+					const { name, email, _id } = savedUser;
+					const token = jwt.sign({
+						email,
+						userId: _id,
+					}, config.jwtSecret);
+
+					return ({
+						token,
+						ttl: 86400,
+						account: {
+							email,
+							name,
+						}
+					});
+				});
+		});
+}
+
 module.exports = {
 	signin,
 	signup,
 	restorePassword,
+	graphQLSignin,
+	graphQLSignup
 };

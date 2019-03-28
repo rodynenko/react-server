@@ -3,6 +3,7 @@ const Article = require('../models/article.model');
 const User = require('../models/user.model');
 const { getGraphQLContext, authenticated } = require('./context');
 const { graphQLSignin, graphQLSignup } = require('../controllers/auth.controller');
+const { gqlCreateArticle, gqlUpdateArticle, gqlDeleteArticle, gqlAddComment, gqlRemoveComment } = require('../controllers/article.controller');
 
 const typeDefs = gql`
 	type Query {
@@ -12,9 +13,9 @@ const typeDefs = gql`
 	}
 
 	type Mutation {
-		createArticle(title: String!, text: String!, image: String): Article
+		createArticle(title: String!, text: String!, image: String)
 		deleteArticle(slug: String!)
-		updateArticle(title: String!, text: String!, image: String, isPublished: Boolean, publicatedAt: String): Article
+		updateArticle(slug: String!, title: String, text: String, image: String, isPublished: Boolean, publicatedAt: String)
 		addComment(articleId: ID!, comment: String!)
 		removeComment(commentID: ID!)
 		login(email: String!, password: String!): AuthResponse
@@ -79,11 +80,11 @@ const resolvers = {
 	},
 
 	Mutation: {
-		createArticle: authenticated(),
-		deleteArticle: authenticated(),
-		updateArticle: authenticated(),
-		addComment: authenticated(),
-		removeComment: authenticated(),
+		createArticle: authenticated((_, args, context) => gqlCreateArticle(args, context)),
+		deleteArticle: authenticated((_, args, context) => gqlDeleteArticle(args, context)),
+		updateArticle: authenticated((_, args, context) => gqlUpdateArticle(args, context)),
+		addComment: authenticated((_, args, context) => gqlAddComment(args, context)),
+		removeComment: authenticated((_, args, context) => gqlRemoveComment(args, context)),
 		login: (_, args) => graphQLSignin(args),
 		signup: (_, args) => graphQLSignup(args),
 	}

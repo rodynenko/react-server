@@ -4,6 +4,7 @@ const Article = require('../models/article.model');
 const sluglify = require('../helpers/sluglify');
 const filterObject = require('../helpers/filterObject');
 const ApiError = require('../helpers/APIError');
+const _ = require('lodash');
 
 /**
 * load Catalogues by page and filters
@@ -127,6 +128,65 @@ function removeComment(req, res, next) {
 		.catch(e => next(e));
 }
 
+function gqlCreateArticle(params, context) {
+	const filterBody = filterObject(params, [
+		'title', 'text', 'image'
+	]);
+
+	const newArticle = new Article({
+		...filterBody,
+		slug: `${sluglify(filterBody.title)}-${uuid()}`,
+		author: context.user.userId,
+		isPublished: true,
+	});
+
+	return newArticle.save();
+}
+
+function gqlUpdateArticle(params, context) {
+	let filterBody = filterObject(params, [
+		'title', 'text', 'image', 'isPublished', 'publicatedAt'
+	]);
+
+	filterBody = _.pickBy(filterBody, (val) => !_.isNil(val));
+
+	return Article.findOneAndUpdate({ slug: params.slug }, { $set: { ...filterBody } });
+}
+
+function gqlUpdateArticle(params, context) {
+	let filterBody = filterObject(params, [
+		'title', 'text', 'image', 'isPublished', 'publicatedAt'
+	]);
+
+	filterBody = _.pickBy(filterBody, (val) => !_.isNil(val));
+
+	return Article.findOneAndUpdate({ slug: params.slug }, { $set: { ...filterBody } });
+}
+
+function gqlDeleteArticle(params, context) {
+	return Article.findOneAndRemove({ slug: params.slug });
+}
+
+function gqlAddComment(params, context) {
+	const filterBody = filterObject(body, ['article_id', 'comment']);
+
+	const newComment = {
+		comment: filterBody.comment,
+		author: userId,
+		id: uuid()
+	};
+
+	return Article.findOneAndUpdate({ _id: filterBody.article_id }, { $push: { comments: newComment } });
+}
+
+function gqlRemoveComment(params){
+	return Article.findOneAndUpdate({
+		'comments.id': params.commentID
+	}, {
+		$pull: { comments: { id: commentID } }
+	});
+}
+
 module.exports = {
 	get,
 	getArticle,
@@ -135,4 +195,9 @@ module.exports = {
 	update,
 	createComment,
 	removeComment,
+	gqlCreateArticle,
+	gqlUpdateArticle,
+	gqlDeleteArticle,
+	gqlAddComment,
+	gqlRemoveComment
 };

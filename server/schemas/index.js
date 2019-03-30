@@ -13,11 +13,11 @@ const typeDefs = gql`
 	}
 
 	type Mutation {
-		createArticle(title: String!, text: String!, image: String)
-		deleteArticle(slug: String!)
-		updateArticle(slug: String!, title: String, text: String, image: String, isPublished: Boolean, publicatedAt: String)
-		addComment(articleId: ID!, comment: String!)
-		removeComment(commentID: ID!)
+		createArticle(title: String!, text: String!, image: String): String
+		deleteArticle(slug: String!): String
+		updateArticle(slug: String!, title: String, text: String, image: String, isPublished: Boolean, publicatedAt: String): String
+		addComment(articleId: ID!, comment: String!): String
+		removeComment(commentID: ID!): String
 		login(email: String!, password: String!): AuthResponse
 		signup(email: String!, password: String!, name: String!): AuthResponse
 	}
@@ -49,7 +49,7 @@ const typeDefs = gql`
 
 	type AuthResponse {
 		token: String
-		ttl: Number
+		ttl: Int
 		account: User
 	}
 `;
@@ -73,9 +73,6 @@ const resolvers = {
 		author: _ => User.findOne({ _id: _.author[0] })
 	},
 	Comment: {
-		author: _ => User.findOne({ _id: _.author[0] })
-	},
-	AuthResponse: {
 		author: _ => User.findOne({ _id: _.author[0] })
 	},
 

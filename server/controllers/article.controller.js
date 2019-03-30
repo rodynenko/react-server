@@ -140,7 +140,8 @@ function gqlCreateArticle(params, context) {
 		isPublished: true,
 	});
 
-	return newArticle.save();
+	return newArticle.save()
+		.then(() => 'OK');
 }
 
 function gqlUpdateArticle(params, context) {
@@ -150,21 +151,13 @@ function gqlUpdateArticle(params, context) {
 
 	filterBody = _.pickBy(filterBody, (val) => !_.isNil(val));
 
-	return Article.findOneAndUpdate({ slug: params.slug }, { $set: { ...filterBody } });
-}
-
-function gqlUpdateArticle(params, context) {
-	let filterBody = filterObject(params, [
-		'title', 'text', 'image', 'isPublished', 'publicatedAt'
-	]);
-
-	filterBody = _.pickBy(filterBody, (val) => !_.isNil(val));
-
-	return Article.findOneAndUpdate({ slug: params.slug }, { $set: { ...filterBody } });
+	return Article.findOneAndUpdate({ slug: params.slug }, { $set: { ...filterBody } })
+		.then(() => 'OK');
 }
 
 function gqlDeleteArticle(params, context) {
-	return Article.findOneAndRemove({ slug: params.slug });
+	return Article.findOneAndRemove({ slug: params.slug })
+		.then(() => 'OK');
 }
 
 function gqlAddComment(params, context) {
@@ -176,15 +169,18 @@ function gqlAddComment(params, context) {
 		id: uuid()
 	};
 
-	return Article.findOneAndUpdate({ _id: filterBody.article_id }, { $push: { comments: newComment } });
+	return Article.findOneAndUpdate(
+		{ _id: filterBody.article_id },
+		{ $push: { comments: newComment } }
+	).then(() => 'OK');
 }
 
 function gqlRemoveComment(params){
 	return Article.findOneAndUpdate({
 		'comments.id': params.commentID
 	}, {
-		$pull: { comments: { id: commentID } }
-	});
+		$pull: { comments: { id: params.commentID } }
+	}).then(() => 'OK');;
 }
 
 module.exports = {

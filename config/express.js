@@ -11,8 +11,6 @@ const expressWinston = require('express-winston');
 const expressValidation = require('express-validation');
 const helmet = require('helmet');
 const path = require('path');
-const mongoExpress = require('mongo-express/lib/middleware');
-const mongoExpressConfig = require('./mongo-express-config');
 const winstonInstance = require('./winston');
 const routes = require('../server/routes/index.route');
 const config = require('./config');
@@ -37,9 +35,6 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 const corsMiddleware = cors({});
-
-// add MongoExress DB admin
-app.use('/admin-mongo', mongoExpress(mongoExpressConfig));
 
 // add ApolloServer
 const { typeDefs, resolvers, context } = require('../server/schemas');

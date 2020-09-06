@@ -62,9 +62,9 @@ const resolvers = {
 			const _page = Math.max(parseInt(page, 10));
 
 			return Article.find()
-			.sort({ publicatedAt: -1 })
-			.skip((_page - 1) * _perPage)
-			.limit(_perPage);
+				.sort({ publicatedAt: -1 })
+				.skip((_page - 1) * _perPage)
+				.limit(_perPage);
 		},
 		userDetails: authenticated((_, args, context) =>
 			User.findOne({ _id: context.user.userId })),

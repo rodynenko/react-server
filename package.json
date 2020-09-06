@@ -11,7 +11,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,8 @@
     "API"
   ],
   "dependencies": {
-    "apollo-server": "^2.6.9",
-    "apollo-server-express": "^2.6.9",
+    "apollo-server": "^2.17.0",
+    "apollo-server-express": "^2.17.0",
     "bluebird": "3.4.6",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -36,23 +38,23 @@
     "debug": "^2.4.5",
     "dotenv": "^4.0.0",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.3",
+    "express-jwt": "^6.0.0",
     "express-validation": "1.0.1",
     "express-winston": "^3.2.1",
-    "graphql": "^14.4.2",
-    "helmet": "^3.18.0",
+    "graphql": "^14.7.0",
+    "helmet": "^3.23.3",
     "http-status": "^0.2.0",
     "joi": "10.0.6",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "method-override": "^2.3.5",
     "mongoose": "^5.10.3",
     "morgan": "^1.9.1",
     "uuid": "^3.2.1",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "eslint": "^7.8.1",
     "eslint-config-airbnb-base": "7.1.0",
     "eslint-plugin-import": "1.16.0",
     "eslint-watch": "^7.0.0",

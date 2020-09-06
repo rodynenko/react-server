@@ -26,6 +26,7 @@ function changePassword(req, res, next) {
 	User.findOne({ _id: userId })
 		.then((user) => {
 			if (user) {
+				// eslint-disable-next-line no-param-reassign
 				user.password = user.encryptPassword(body.password);
 				return user.save()
 					.then(() => res.json({ message: 'Password changed successfully' }));
@@ -43,17 +44,18 @@ function changeDetails(req, res, next) {
 	const { body, user: { userId } } = req;
 
 	User.findOne({ _id: userId })
-	.then((user) => {
-		if (user) {
-			Object.keys(body).reduce((prev, curr) => (user[curr] = body[curr]));
+		.then((user) => {
+			if (user) {
+				// eslint-disable-next-line no-param-reassign
+				Object.keys(body).reduce((prev, curr) => (user[curr] = body[curr]));
 
-			return user.save()
-				.then(() => res.json({ message: 'Details changed successfully' }));
-		}
+				return user.save()
+					.then(() => res.json({ message: 'Details changed successfully' }));
+			}
 
-		throw new Error('user not found');
-	})
-	.catch(e => next(e));
+			throw new Error('user not found');
+		})
+		.catch(e => next(e));
 }
 
 module.exports = {

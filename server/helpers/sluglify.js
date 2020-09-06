@@ -1,8 +1,8 @@
 const sluglify = text => text.toString().toLowerCase()
-		.replace(/\s+/g, '-')
+	.replace(/\s+/g, '-')
 		.replace(/[^\w\-]+/g, '') // eslint-disable-line
 		.replace(/\-\-+/g, '-') // eslint-disable-line
-		.replace(/^-+/, '')
-		.replace(/-+$/, '');
+	.replace(/^-+/, '')
+	.replace(/-+$/, '');
 
 module.exports = sluglify;

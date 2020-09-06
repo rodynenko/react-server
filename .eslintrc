@@ -17,15 +17,11 @@
     "comma-dangle": [
       0
     ],
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": true
-      }
-    ],
+    "import/no-extraneous-dependencies": 0,
     "no-underscore-dangle": [
       0
-    ]
+    ],
+    "no-undef": 1
   },
   "env": {
     "node": true,
@@ -36,7 +32,6 @@
     "sourceType": "module"
   },
   "extends": [
-    "eslint:recommended",
-    "airbnb-base"
+    "eslint:recommended"
   ]
 }

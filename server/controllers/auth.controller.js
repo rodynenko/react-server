@@ -37,8 +37,8 @@ function signin(req, res, next) {
 		});
 }
 
-	// const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-	// return next(err);
+// const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+// return next(err);
 
 function signup(req, res, next) {
 	const { body } = req;
@@ -73,7 +73,7 @@ function signup(req, res, next) {
 					});
 				});
 		})
-	.catch(e => next(e));
+		.catch(e => next(e));
 }
 
 function restorePassword(req, res, next) {

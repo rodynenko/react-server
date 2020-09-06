@@ -1,5 +1,5 @@
 const express = require('express');
-const expressJwt = require('express-jwt');
+const expressJwt = require('../helpers/expressJWT');
 const config = require('../../config/config');
 const userCtrl = require('../controllers/user.controller');
 

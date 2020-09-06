@@ -25,8 +25,8 @@ const UserSchema = new mongoose.Schema({
 UserSchema.method({
 	encryptPassword(password) {
 		return crypto.createHmac('sha1', this.salt)
-									.update(password)
-									.digest('hex');
+			.update(password)
+			.digest('hex');
 	},
 	authenticate(plainText) {
 		return this.encryptPassword(plainText) === this.password;

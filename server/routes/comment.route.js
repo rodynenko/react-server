@@ -1,5 +1,5 @@
 const express = require('express');
-const expressJwt = require('express-jwt');
+const expressJwt = require('../helpers/expressJWT');
 const validate = require('express-validation');
 const paramValidation = require('../../config/param-validation');
 const config = require('../../config/config');
